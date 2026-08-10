@@ -1,6 +1,6 @@
 export default {
   async fetch(requst, env) {
-    const url = new UR(request.url);
+    const url = ne UR(request.url);
     // صفحه 
     if (url.pathname === /") {
       return json({
