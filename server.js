@@ -53,18 +53,7 @@ export default {
 
     return json({
       success: false,
-      message: "مسیر موردنظر پیدا نشد"
-    }, 404);
-  }
-};
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data, null, 2), {
-    status,
-    headers: {
-      "content-type": "application/json; charset=UTF-8",
-      "access-control-allow-origin": "*",
-      "cache-control": "no-store"
+      message: 
     }
   });
 }
