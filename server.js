@@ -5,7 +5,7 @@ export default {
     // صفحه اصلی
     if (url.pathname === "/") {
       return json({
-        success: true,
+        success: true
         app
         server: "online",
         version: "1.0.0"
