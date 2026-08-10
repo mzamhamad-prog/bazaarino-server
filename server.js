@@ -1,5 +1,5 @@
 export default {
-  async fetch(request, env) {
+  async fetch(requst, env) {
     const url = new URL(request.url);
 
     // صفحه اصلی
