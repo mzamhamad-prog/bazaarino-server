@@ -1,7 +1,7 @@
 export default {
   async fetch(requst, env) {
     const url = new URL(request.url);
-    // صفحه اصلی
+    // صفحه اصل
     if (url.pathname === "/") {
       return json({
         success: true
