@@ -1,54 +1,70 @@
-const express = require("express");
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    app: "Bazaarino",
-    server: "online"
-  });
-});
-
-app.get("/api/status", (req, res) => {
-  res.json({
-    success: true,
-    app: "Bazaarino",
-    status: "online",
-    message: "Bazaarino API is working"
-  });
-});
-
-app.get("/search", (req, res) => {
-  const query = (req.query.q || "").trim();
-
-  if (!query) {
-    return res.status(400).json({
-      success: false,
-      message: "نام کالا را وارد کنید",
-      total: 0,
-      products: []
-    });
-  }
-
-  const products = [
-    {
-      title: `نتیجه آزمایشی برای ${query}`,
-      price: 100
+    // صفحه اصلی
+    if (url.pathname === "/") {
+      return json({
+        success: true,
+        app: "Bazaarino",
+        server: "online",
+        version: "1.0.0"
+      });
     }
-  ];
 
-  res.json({
-    success: true,
-    query: query,
-    total: products.length,
-    products: products
+    // وضعیت API
+    if (url.pathname === "/api/status") {
+      return json({
+        success: true,
+        app: "Bazaarino",
+        status: "online"
+      });
+    }
+
+    // جستجوی محصولات
+    if (url.pathname === "/search") {
+      const query = (url.searchParams.get("q") || "").trim();
+
+      if (!query) {
+        return json({
+          success: false,
+          message: "نام کالا را وارد کنید",
+          total: 0,
+          products: []
+        }, 400);
+      }
+
+      /*
+       * اینجا نقطه اتصال به منبع واقعی محصولات بازارینو است.
+       *
+       * بعداً API یا Feed واقعی فروشگاه‌ها را به این قسمت وصل می‌کنیم.
+       * هیچ محصول و قیمت ساختگی در این Worker قرار داده نشده است.
+       */
+
+      const products = [];
+
+      return json({
+        success: true,
+        query,
+        total: products.length,
+        products
+      });
+    }
+
+    return json({
+      success: false,
+      message: "مسیر موردنظر پیدا نشد"
+    }, 404);
+  }
+};
+
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data, null, 2), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=UTF-8",
+      "access-control-allow-origin": "*",
+      "cache-control": "no-store"
+    }
   });
-});
-
-app.listen(PORT, () => {
-  console.log(`Bazaarino server running on port ${PORT}`);
-});
+}
