@@ -6,7 +6,7 @@ export default {
     if (url.pathname === "/") {
       return json({
         success: true,
-        app: "Bazaarino",
+        app
         server: "online",
         version: "1.0.0"
       });
